@@ -16,10 +16,10 @@ How to build
 
 You require the following to build uRegistrum:
 
-    Latest stable Oracle JDK 7
-    Latest stable Apache Maven
+- Latest stable Oracle JDK 7
+- Latest stable Apache Maven
 
- $ mvn package
+     $ mvn package
 
 How to use
 ==========
