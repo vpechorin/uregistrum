@@ -1,0 +1,7 @@
+/target
+/.settings
+/.project
+/.springBeans
+/.classpath
+/buildNumber.properties
+/*.ppr
