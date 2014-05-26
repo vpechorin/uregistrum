@@ -9,6 +9,7 @@ import net.pechorina.uregistrum.exceptions.EndpointNotFoundException;
 import net.pechorina.uregistrum.model.Endpoint;
 import net.pechorina.uregistrum.repos.EndpointRepositary;
 
+import org.jasypt.util.text.BasicTextEncryptor;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -27,6 +28,7 @@ public class EndpointService {
 	public Endpoint addEndpoint(Endpoint p) throws EndpointExistsException {
 		Endpoint existingEntity = endpointRepo.findOne(p.getName());
 		if (existingEntity != null) throw new EndpointExistsException("Endpoint already exists: " + p.getName());
+		updateEncPassword(p);
 		Endpoint entity = endpointRepo.saveAndFlush(p);
 		return entity;
 	}
@@ -34,18 +36,20 @@ public class EndpointService {
 	@Transactional
 	public Endpoint saveEndpoint(Endpoint p) {
 		updateDateTime(p);
+		updateEncPassword(p);
 		Endpoint entity = endpointRepo.saveAndFlush(p);
 		return entity;
 	}
 	
 	@Transactional
-	public Endpoint addEndpoint(String name, String address, String description, String version) throws EndpointExistsException {
+	public Endpoint addEndpoint(String name, String localAddress, String remoteAddress, String description, String version) throws EndpointExistsException {
 		Endpoint existingEntity = endpointRepo.findOne(name);
 		if (existingEntity != null) throw new EndpointExistsException("Endpoint already exists: " + name);
 
 		Endpoint e = new Endpoint();
 		e.setName(name);
-		e.setAddress(address);
+		e.setLocalAddress(localAddress);
+		e.setRemoteAddress(remoteAddress);
 		e.setDescription(description);
 		e.setVersion(version);
 		DateTime now = new DateTime();
@@ -53,6 +57,7 @@ public class EndpointService {
 		e.setRegistered(now);
 		e.setExpires(expireDt);
 		
+		updateEncPassword(e);
 		Endpoint entity = endpointRepo.saveAndFlush(e);
 		return entity;
 	}
@@ -86,6 +91,7 @@ public class EndpointService {
 
 		if (p != null) {
 			updateDateTime(p);
+			updateEncPassword(p);
 			endpointRepo.saveAndFlush(p);
 		}
 		return p;
@@ -95,6 +101,7 @@ public class EndpointService {
 	public Endpoint lookupEndpoint(String name) throws EndpointNotFoundException {
 		Endpoint p = endpointRepo.findOne(name);
 		if (p == null) throw new EndpointNotFoundException("Cannot find endpoint: " + name);
+		updatePassword(p);
 		return p;
 	}
 	
@@ -107,4 +114,27 @@ public class EndpointService {
 	public void deleteEndpoint(String name) {
 		endpointRepo.delete(name);
 	}
+
+	private void updateEncPassword(Endpoint e) {
+		if (e.getPassword() == null) {
+			e.setEncryptedPassword(null);
+			return;
+		}
+		BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
+		textEncryptor.setPassword(env.getProperty("app.secret.key"));
+		String encryptedPass = textEncryptor.encrypt(e.getPassword());
+		e.setEncryptedPassword(encryptedPass);
+	}
+	
+	private void updatePassword(Endpoint e) {
+		if (e.getEncryptedPassword() == null) {
+			e.setPassword(null);
+			return;
+		}
+		BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
+		textEncryptor.setPassword(env.getProperty("app.secret.key"));
+		String plainText = textEncryptor.decrypt(e.getEncryptedPassword());
+		e.setPassword(plainText);
+	}
+
 }

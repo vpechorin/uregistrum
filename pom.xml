@@ -4,7 +4,7 @@
 	<groupId>net.pechorina.uregistrum</groupId>
 	<artifactId>uregistrum</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0-SNAPSHOT</version>
+	<version>0.1</version>
 	<name>uregistrum</name>
 	<description>uRegistrum - java micro services registry</description>
 	<url>https://github.com/vpechorin/uregistrum</url>
@@ -21,11 +21,6 @@
 			<timezone>+12</timezone>
 		</developer>
 	</developers>
-	
-	<scm>
-		<connection>scm:git:file:///home/victor/workspace/uregistrum</connection>
-	</scm>
-	
 
 	<properties>
 		<java.version>1.7</java.version>
@@ -33,6 +28,7 @@
         <servlet-api.version>3.1.0</servlet-api.version>
         <h2databes.version>1.4.177</h2databes.version>
         <usertype.version>3.1.0.GA</usertype.version>
+        <jasypt.version>1.9.2</jasypt.version>
 	</properties>
 
 	<!-- Inherit defaults from Spring Boot -->
@@ -53,6 +49,10 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<dependency> 
+			<groupId>org.springframework.boot</groupId> 
+			<artifactId>spring-boot-starter-actuator</artifactId> 
+		</dependency>		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jetty</artifactId>
@@ -91,9 +91,20 @@
 			<artifactId>joda-time</artifactId>
 		</dependency>
 		<dependency>
-        	<groupId>org.springframework.hateoas</groupId>
-        	<artifactId>spring-hateoas</artifactId>
-    </dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>  
+		<dependency>
+      		<groupId>org.jasypt</groupId>
+      		<artifactId>jasypt</artifactId>
+      		<version>${jasypt.version}</version>
+      		<scope>compile</scope>
+    	</dependency>  	
+    	<dependency>
+  			<groupId>org.apache.httpcomponents</groupId>
+  			<artifactId>httpclient</artifactId>
+		</dependency>
 	</dependencies>
 
 	<!-- Package as an executable jar -->
@@ -103,6 +114,10 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+            	<groupId>pl.project13.maven</groupId>
+            	<artifactId>git-commit-id-plugin</artifactId>
+        	</plugin>
 		</plugins>
 	</build>
 </project>

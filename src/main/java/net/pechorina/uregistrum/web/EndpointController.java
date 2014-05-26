@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -36,40 +35,24 @@ public class EndpointController {
 	@Autowired
 	private EndpointService endpointService;
 
-	@Autowired
-	private EndpointResourceAssembler endpointResourceAssembler;
-
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<EndpointResource>> list() {
+	public ResponseEntity<List<Endpoint>> list() {
 		List<Endpoint> list = endpointService.listAll();
-		List<EndpointResource> resources = endpointResourceAssembler
-				.toResources(list);
-		return new ResponseEntity<List<EndpointResource>>(resources,
-				HttpStatus.OK);
+		return new ResponseEntity<List<Endpoint>>(list,	HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/{name}")
-	public ResponseEntity<EndpointResource> lookup(
+	public ResponseEntity<Endpoint> lookup(
 			@PathVariable("name") String name) throws EndpointNotFoundException {
 		Endpoint e = endpointService.lookupEndpoint(name);
-		EndpointResource res = endpointResourceAssembler.toResource(e);
-		return new ResponseEntity<EndpointResource>(res, HttpStatus.OK);
+		return new ResponseEntity<Endpoint>(e, HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<EndpointResource> createEndpoint(
-			@RequestParam(value = "name", required = true) String name,
-			@RequestParam(value = "address", required = true) String address,
-			@RequestParam(value = "description", required = false, defaultValue = "") String description,
-			@RequestParam(value = "version", required = false, defaultValue = "") String version,
-			HttpServletRequest request) throws EndpointExistsException {
-		Endpoint savedEntity = endpointService.addEndpoint(name, address,
-				description, version);
-		logger.info("CREATE: " + name + " - " + address + " Src:" + request.getRemoteAddr());
-		EndpointResource resource = endpointResourceAssembler
-				.toResource(savedEntity);
-		return new ResponseEntity<EndpointResource>(resource,
-				HttpStatus.CREATED);
+	public ResponseEntity<Endpoint> createEndpoint(@RequestBody Endpoint endpoint, HttpServletRequest request) throws EndpointExistsException {
+		Endpoint savedEntity = endpointService.addEndpoint(endpoint);
+		logger.info("CREATE: " + savedEntity + " Src:" + request.getRemoteAddr());
+		return new ResponseEntity<Endpoint>(savedEntity, HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, value = "/{name}")

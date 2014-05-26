@@ -50,9 +50,10 @@ public class PersistenceConfig {
 		factory.setPackagesToScan("net.pechorina.uregistrum.model");
 		Properties jpaProperties = new Properties();
 		jpaProperties.put("hibernate.hbm2ddl.auto",
-				env.getProperty("hibernate.hbm2ddl.auto"));
+				env.getProperty("spring.jpa.hibernate.ddl-auto"));
 		jpaProperties.put("hibernate.dialect",
-				env.getProperty("hibernate.dialect"));
+				env.getProperty("spring.jpa.hibernate.dialect"));
+		jpaProperties.put("hibernate.show_sql", env.getProperty("spring.jpa.hibernate.show_sql"));
 		factory.setJpaProperties(jpaProperties);
 		factory.afterPropertiesSet();
 		factory.setLoadTimeWeaver(new InstrumentationLoadTimeWeaver());
@@ -67,10 +68,10 @@ public class PersistenceConfig {
 	@Bean
 	public DataSource dataSource() {
 		DataSource dataSource = new DataSource();
-		dataSource.setDriverClassName(env.getProperty("jdbc.driverClassName"));
-		dataSource.setUrl(env.getProperty("jdbc.url"));
-		dataSource.setUsername(env.getProperty("jdbc.username"));
-		dataSource.setPassword(env.getProperty("jdbc.password"));
+		dataSource.setDriverClassName(env.getProperty("spring.datasource.driverClassName"));
+		dataSource.setUrl(env.getProperty("spring.datasource.url"));
+		dataSource.setUsername(env.getProperty("spring.datasource.username"));
+		dataSource.setPassword(env.getProperty("spring.datasource.password"));
 		return dataSource;
 	}
 
