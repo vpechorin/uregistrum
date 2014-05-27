@@ -6,6 +6,7 @@ uRegistrum is one of the major building blocks required for creating a java micr
 Features
 ==========
 - Platform Independent (java app)
+- Store local and remote urls for each service, with optional login/passwords
 - REST endpoints to add/remove/lookup endpoints
 - Embedded webserver (Jetty)
 - Embedded database engine (H2 Database Engine), can be configured with other popular relational databases
@@ -18,15 +19,15 @@ You require the following to build uRegistrum:
 
 - Latest stable Oracle JDK 7
 - Latest stable Apache Maven
-
-     $ mvn package
+ $ mvn package
+     
 
 How to use
 ==========
+	
+ $ java -jar ./target/uregistrum-0.1.jar
 
- $ java -jar ./target/uregistrum-1.0-SNAPSHOT.jar
-
-The default address is http://localhost:7080/api/
+The default address is http://localhost:11400/api/endpoints
 
 uRegistrum
 ==========
