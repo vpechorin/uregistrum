@@ -4,7 +4,7 @@
 	<groupId>net.pechorina.uregistrum</groupId>
 	<artifactId>uregistrum</artifactId>
 	<packaging>jar</packaging>
-	<version>0.1</version>
+	<version>0.2</version>
 	<name>uregistrum</name>
 	<description>uRegistrum - java micro services registry</description>
 	<url>https://github.com/vpechorin/uregistrum</url>

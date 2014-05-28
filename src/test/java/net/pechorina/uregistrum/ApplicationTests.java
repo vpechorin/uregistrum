@@ -31,82 +31,99 @@ import org.springframework.web.context.WebApplicationContext;
 @ActiveProfiles("test")
 @IntegrationTest
 public class ApplicationTests {
-	static final Logger logger = LoggerFactory.getLogger(ApplicationTests.class);
-			
+	static final Logger logger = LoggerFactory
+			.getLogger(ApplicationTests.class);
+
 	@Autowired
 	private WebApplicationContext context;
-	
+
 	@Autowired
 	private Environment env;
-	
-	@Value ("${security.user.name}")
+
+	@Value("${security.user.name}")
 	private String user;
-	
-	@Value ("${security.user.password}")
+
+	@Value("${security.user.password}")
 	private String password;
-	
+
 	@Autowired
 	private EndpointService endpointService;
-	
+
 	@Test
 	public void testCreate() throws Exception {
-		Endpoint e = new Endpoint("testsrv1", "http://localhost:11401/api", "http://localhost.localdomain:11401/api/", "admin", "test");
+		Endpoint e = new Endpoint("testsrv1", "localhost",
+				"localhost.localdomain", 11401, "/api", "admin", "test");
 		assertNotNull(endpointService.saveEndpoint(e));
 	}
-	
+
 	@Test
 	public void testRetrieve() throws Exception {
-		Endpoint e = new Endpoint("testsrv2", "http://localhost:11401/api2", "http://localhost.localdomain:11401/api2", "admin", "test");
+		Endpoint e = new Endpoint("testsrv2", "localhost",
+				"localhost.localdomain", 11401, "/api", "admin", "test");
 		Endpoint savedEntity = endpointService.saveEndpoint(e);
+		
 		Endpoint e2 = endpointService.lookupEndpoint("testsrv2");
 		assertNotNull(e2);
 		assertEquals(savedEntity, e2);
 	}
-	
+
 	@Test
 	public void testRestPost() throws Exception {
-		Endpoint e3 = new Endpoint("testsrv3", "http://localhost:11401/api3", "http://localhost.localdomain:11401/api3", "admin", "test");
-		
-		RestTemplate restTemplate = new TestRestTemplate(user, password);
-		restTemplate.postForLocation("http://localhost:11401/api/endpoints", e3);
+		Endpoint e3 = new Endpoint("testsrv3", "localhost",
+				"localhost.localdomain", 11401, "/api", "admin", "test");
 
-		ResponseEntity<Endpoint> entity = restTemplate.getForEntity("http://localhost:11401/api/endpoints/testsrv3", Endpoint.class);
+		RestTemplate restTemplate = new TestRestTemplate(user, password);
+		restTemplate
+				.postForLocation("http://localhost:11401/api/endpoints", e3);
+
+		ResponseEntity<Endpoint> entity = restTemplate
+				.getForEntity("http://localhost:11401/api/endpoints/testsrv3",
+						Endpoint.class);
 		logger.debug("Received: " + entity);
-				
-		assertEquals(e3, entity.getBody()); 
+
+		assertEquals(e3, entity.getBody());
 	}
-	
+
 	@Test
 	public void testRestPut() throws Exception {
-		Endpoint e4 = new Endpoint("testsrv4", "http://localhost:11401/api4", "http://localhost.localdomain:11401/api4", "admin", "test");
-		
+		Endpoint e4 = new Endpoint("testsrv4", "localhost",
+				"localhost.localdomain", 11401, "/api", "admin", "test");
+
 		RestTemplate restTemplate = new TestRestTemplate(user, password);
 		restTemplate.put("http://localhost:11401/api/endpoints/testsrv4", e4);
 
-		ResponseEntity<Endpoint> entity = restTemplate.getForEntity("http://localhost:11401/api/endpoints/testsrv4", Endpoint.class);
-		
-		assertEquals(e4, entity.getBody()); 
+		ResponseEntity<Endpoint> entity = restTemplate
+				.getForEntity("http://localhost:11401/api/endpoints/testsrv4",
+						Endpoint.class);
+
+		assertEquals(e4, entity.getBody());
 	}
-	
+
 	@Test
 	public void testRestSave() throws Exception {
 		@SuppressWarnings("rawtypes")
-		ResponseEntity<List> entity = new TestRestTemplate(user, password).getForEntity("http://localhost:11401/api/endpoints", List.class);
+		ResponseEntity<List> entity = new TestRestTemplate(user, password)
+				.getForEntity("http://localhost:11401/api/endpoints",
+						List.class);
 		assertEquals(HttpStatus.OK, entity.getStatusCode());
 	}
-	
+
 	@Test
 	public void testRestDelete() throws Exception {
-		Endpoint e5 = new Endpoint("testsrv5", "http://localhost:11401/api5", "http://localhost.localdomain:11401/api5", "admin", "test");
-		
+		Endpoint e5 = new Endpoint("testsrv5", "localhost",
+				"localhost.localdomain", 11401, "/api", "admin", "test");
+
 		RestTemplate restTemplate = new TestRestTemplate(user, password);
-		restTemplate.postForLocation("http://localhost:11401/api/endpoints", e5);
-		
+		restTemplate
+				.postForLocation("http://localhost:11401/api/endpoints", e5);
+
 		restTemplate.delete("http://localhost:11401/api/endpoints/testsrv5");
-		
-		ResponseEntity<Endpoint> entity = restTemplate.getForEntity("http://localhost:11401/api/endpoints/testsrv5", Endpoint.class);
+
+		ResponseEntity<Endpoint> entity = restTemplate
+				.getForEntity("http://localhost:11401/api/endpoints/testsrv5",
+						Endpoint.class);
 		logger.debug("Received: " + entity);
-				
-		assertEquals(entity.getStatusCode(), HttpStatus.NOT_FOUND); 
+
+		assertEquals(entity.getStatusCode(), HttpStatus.NOT_FOUND);
 	}
 }

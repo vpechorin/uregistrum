@@ -25,6 +25,8 @@ public class Endpoint implements Serializable {
 	private String description;
 	private String localAddress;
 	private String remoteAddress;
+	private int port;
+	private String path;
 	private String version;
 	private String username;
 
@@ -51,12 +53,14 @@ public class Endpoint implements Serializable {
 		this.remoteAddress = remoteAddress;
 	}
 
-	public Endpoint(String name, String localAddress, String remoteAddress,
+	public Endpoint(String name, String localAddress, String remoteAddress, int port, String path,
 			String username, String password) {
 		super();
 		this.name = name;
 		this.localAddress = localAddress;
 		this.remoteAddress = remoteAddress;
+		this.port = port;
+		this.path = path;
 		this.username = username;
 		this.password = password;
 	}
@@ -141,6 +145,22 @@ public class Endpoint implements Serializable {
 		this.encryptedPassword = encryptedPassword;
 	}
 
+	public int getPort() {
+		return port;
+	}
+
+	public void setPort(int port) {
+		this.port = port;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -152,6 +172,10 @@ public class Endpoint implements Serializable {
 		builder.append(localAddress);
 		builder.append(", remoteAddress=");
 		builder.append(remoteAddress);
+		builder.append(", port=");
+		builder.append(port);
+		builder.append(", path=");
+		builder.append(path);
 		builder.append(", version=");
 		builder.append(version);
 		builder.append(", username=");
