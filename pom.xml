@@ -4,7 +4,7 @@
 	<groupId>net.pechorina.uregistrum</groupId>
 	<artifactId>uregistrum</artifactId>
 	<packaging>jar</packaging>
-	<version>0.2</version>
+	<version>0.3</version>
 	<name>uregistrum</name>
 	<description>uRegistrum - java micro services registry</description>
 	<url>https://github.com/vpechorin/uregistrum</url>
@@ -35,7 +35,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.0.2.RELEASE</version>
+		<version>1.1.0.M2</version>
 	</parent>
 
 	<dependencies>
@@ -120,4 +120,26 @@
         	</plugin>
 		</plugins>
 	</build>
+	
+    <repositories>
+        <repository>
+            <id>spring-snapshots</id>
+            <url>http://repo.spring.io/snapshot</url>
+            <snapshots><enabled>true</enabled></snapshots>
+        </repository>
+        <repository>
+            <id>spring-milestones</id>
+            <url>http://repo.spring.io/milestone</url>
+        </repository>
+    </repositories>	
+    <pluginRepositories>
+        <pluginRepository>
+            <id>spring-snapshots</id>
+            <url>http://repo.spring.io/snapshot</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>spring-milestones</id>
+            <url>http://repo.spring.io/milestone</url>
+        </pluginRepository>
+    </pluginRepositories>    
 </project>
