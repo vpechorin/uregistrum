@@ -51,14 +51,13 @@ public class ApplicationTests {
 
 	@Test
 	public void testCreate() throws Exception {
-		Endpoint e = new Endpoint("testsrv1", "localhost",
-				"localhost.localdomain", 11401, "/api", "admin", "test");
+		Endpoint e = new Endpoint("testsrv1", "http", "localhost",	"localhost.localdomain", 11401, "/api", "admin", "test");
 		assertNotNull(endpointService.saveEndpoint(e));
 	}
 
 	@Test
 	public void testRetrieve() throws Exception {
-		Endpoint e = new Endpoint("testsrv2", "localhost",
+		Endpoint e = new Endpoint("testsrv2", "http", "localhost",
 				"localhost.localdomain", 11401, "/api", "admin", "test");
 		Endpoint savedEntity = endpointService.saveEndpoint(e);
 		
@@ -69,7 +68,7 @@ public class ApplicationTests {
 
 	@Test
 	public void testRestPost() throws Exception {
-		Endpoint e3 = new Endpoint("testsrv3", "localhost",
+		Endpoint e3 = new Endpoint("testsrv3", "http", "localhost",
 				"localhost.localdomain", 11401, "/api", "admin", "test");
 
 		RestTemplate restTemplate = new TestRestTemplate(user, password);
@@ -86,7 +85,7 @@ public class ApplicationTests {
 
 	@Test
 	public void testRestPut() throws Exception {
-		Endpoint e4 = new Endpoint("testsrv4", "localhost",
+		Endpoint e4 = new Endpoint("testsrv4", "http", "localhost",
 				"localhost.localdomain", 11401, "/api", "admin", "test");
 
 		RestTemplate restTemplate = new TestRestTemplate(user, password);
@@ -110,7 +109,7 @@ public class ApplicationTests {
 
 	@Test
 	public void testRestDelete() throws Exception {
-		Endpoint e5 = new Endpoint("testsrv5", "localhost",
+		Endpoint e5 = new Endpoint("testsrv5", "http", "localhost",
 				"localhost.localdomain", 11401, "/api", "admin", "test");
 
 		RestTemplate restTemplate = new TestRestTemplate(user, password);
