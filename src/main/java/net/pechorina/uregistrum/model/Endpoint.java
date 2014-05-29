@@ -28,8 +28,7 @@ public class Endpoint implements Serializable {
 	private String name;
 	private String description;
 	private String scheme;
-	private String localDomain;
-	private String remoteDomain;
+	private String host;
 	private int port;
 	private String path;
 	private String version;
@@ -51,76 +50,56 @@ public class Endpoint implements Serializable {
 		super();
 	}
 	
-	public Endpoint(String name, URI uriLocal, URI uriRemote, String username, String password) {
+	public Endpoint(String name, URI uri, String username, String password) {
 		super();
 		this.name = name;
-		this.scheme = uriLocal.getScheme();
-		this.localDomain = uriLocal.getHost();
-		this.remoteDomain = uriRemote.getHost();
-		this.port = uriLocal.getPort();
-		this.path = uriLocal.getPath();
+		this.scheme = uri.getScheme();
+		this.host = uri.getHost();
+		this.port = uri.getPort();
+		this.path = uri.getPath();
 		this.username = username;
 		this.password = password;
 	}
 	
-	public Endpoint(String name, String uriLocal, String remoteHost, String username, String password) {
+	public Endpoint(String name, String uriStr, String username, String password) {
 		super();
 		URI uri = null;
 		try {
-			uri = new URI(uriLocal);
+			uri = new URI(uriStr);
 			this.name = name;
 			this.scheme = uri.getScheme();
-			this.localDomain = uri.getHost();
-			this.remoteDomain = remoteHost;
+			this.host = uri.getHost();
 			this.port = uri.getPort();
 			this.path = uri.getPath();
 			this.username = username;
 			this.password = password;
 		} catch (URISyntaxException e) {
-			logger.error("Bad URI syntax: " + uriLocal + " Exception: " + e);
+			logger.error("Bad URI syntax: " + uriStr + " Exception: " + e);
 		}
 	}
 	
-	public Endpoint(String name, String uriLocal, String username, String password) {
+	public Endpoint(String name, String uriStr) {
 		super();
 		URI uri = null;
 		try {
-			uri = new URI(uriLocal);
+			uri = new URI(uriStr);
 			this.name = name;
 			this.scheme = uri.getScheme();
-			this.localDomain = uri.getHost();
-			this.port = uri.getPort();
-			this.path = uri.getPath();
-			this.username = username;
-			this.password = password;
-		} catch (URISyntaxException e) {
-			logger.error("Bad URI syntax: " + uriLocal + " Exception: " + e);
-		}
-	}
-	
-	public Endpoint(String name, String uriLocal) {
-		super();
-		URI uri = null;
-		try {
-			uri = new URI(uriLocal);
-			this.name = name;
-			this.scheme = uri.getScheme();
-			this.localDomain = uri.getHost();
+			this.host = uri.getHost();
 			this.port = uri.getPort();
 			this.path = uri.getPath();
 		} catch (URISyntaxException e) {
-			logger.error("Bad URI syntax: " + uriLocal + " Exception: " + e);
+			logger.error("Bad URI syntax: " + uriStr + " Exception: " + e);
 		}
 	}
 
-	public Endpoint(String name, String scheme, String localDomain,
-			String remoteDomain, int port, String path, String username,
+	public Endpoint(String name, String scheme, String host,
+			int port, String path, String username,
 			String password) {
 		super();
 		this.name = name;
 		this.scheme = scheme;
-		this.localDomain = localDomain;
-		this.remoteDomain = remoteDomain;
+		this.host = host;
 		this.port = port;
 		this.path = path;
 		this.username = username;
@@ -215,20 +194,12 @@ public class Endpoint implements Serializable {
 		this.scheme = scheme;
 	}
 
-	public String getLocalDomain() {
-		return localDomain;
+	public String getHost() {
+		return host;
 	}
 
-	public void setLocalDomain(String localDomain) {
-		this.localDomain = localDomain;
-	}
-
-	public String getRemoteDomain() {
-		return remoteDomain;
-	}
-
-	public void setRemoteDomain(String remoteDomain) {
-		this.remoteDomain = remoteDomain;
+	public void setHost(String host) {
+		this.host = host;
 	}
 
 	@Override
@@ -238,17 +209,14 @@ public class Endpoint implements Serializable {
 		builder.append(name);
 		builder.append(", description=");
 		builder.append(description);
-		builder.append(", scheme=");
+		builder.append(", uri=|");
 		builder.append(scheme);
-		builder.append(", localDomain=");
-		builder.append(localDomain);
-		builder.append(", remoteDomain=");
-		builder.append(remoteDomain);
-		builder.append(", port=");
+		builder.append("://");
+		builder.append(host);
+		builder.append(":");
 		builder.append(port);
-		builder.append(", path=");
 		builder.append(path);
-		builder.append(", version=");
+		builder.append("|, version=");
 		builder.append(version);
 		builder.append(", username=");
 		builder.append(username);
@@ -268,13 +236,10 @@ public class Endpoint implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((localDomain == null) ? 0 : localDomain.hashCode());
+		result = prime * result + ((host == null) ? 0 : host.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((path == null) ? 0 : path.hashCode());
 		result = prime * result + port;
-		result = prime * result
-				+ ((remoteDomain == null) ? 0 : remoteDomain.hashCode());
 		result = prime * result + ((scheme == null) ? 0 : scheme.hashCode());
 		return result;
 	}
@@ -288,10 +253,10 @@ public class Endpoint implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Endpoint other = (Endpoint) obj;
-		if (localDomain == null) {
-			if (other.localDomain != null)
+		if (host == null) {
+			if (other.host != null)
 				return false;
-		} else if (!localDomain.equals(other.localDomain))
+		} else if (!host.equals(other.host))
 			return false;
 		if (name == null) {
 			if (other.name != null)
@@ -304,11 +269,6 @@ public class Endpoint implements Serializable {
 		} else if (!path.equals(other.path))
 			return false;
 		if (port != other.port)
-			return false;
-		if (remoteDomain == null) {
-			if (other.remoteDomain != null)
-				return false;
-		} else if (!remoteDomain.equals(other.remoteDomain))
 			return false;
 		if (scheme == null) {
 			if (other.scheme != null)

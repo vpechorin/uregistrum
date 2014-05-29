@@ -42,15 +42,14 @@ public class EndpointService {
 	}
 	
 	@Transactional
-	public Endpoint addEndpoint(String name, String scheme, String localDomain, String remoteDomain, int port, String path, String description, String version) throws EndpointExistsException {
+	public Endpoint addEndpoint(String name, String scheme, String host, int port, String path, String description, String version) throws EndpointExistsException {
 		Endpoint existingEntity = endpointRepo.findOne(name);
 		if (existingEntity != null) throw new EndpointExistsException("Endpoint already exists: " + name);
 
 		Endpoint e = new Endpoint();
 		e.setName(name);
 		e.setScheme(scheme);
-		e.setLocalDomain(localDomain);
-		e.setRemoteDomain(remoteDomain);
+		e.setHost(host);
 		e.setPort(port);
 		e.setPath(path);
 		e.setDescription(description);

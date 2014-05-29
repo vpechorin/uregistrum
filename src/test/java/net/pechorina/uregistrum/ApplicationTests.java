@@ -51,14 +51,13 @@ public class ApplicationTests {
 
 	@Test
 	public void testCreate() throws Exception {
-		Endpoint e = new Endpoint("testsrv1", "http", "localhost",	"localhost.localdomain", 11401, "/api", "admin", "test");
+		Endpoint e = new Endpoint("testsrv1", "http://localhost:11401/api1", "admin", "test");
 		assertNotNull(endpointService.saveEndpoint(e));
 	}
 
 	@Test
 	public void testRetrieve() throws Exception {
-		Endpoint e = new Endpoint("testsrv2", "http", "localhost",
-				"localhost.localdomain", 11401, "/api", "admin", "test");
+		Endpoint e = new Endpoint("testsrv2", "http://localhost:11401/api2", "admin", "test");
 		Endpoint savedEntity = endpointService.saveEndpoint(e);
 		
 		Endpoint e2 = endpointService.lookupEndpoint("testsrv2");
@@ -68,8 +67,7 @@ public class ApplicationTests {
 
 	@Test
 	public void testRestPost() throws Exception {
-		Endpoint e3 = new Endpoint("testsrv3", "http", "localhost",
-				"localhost.localdomain", 11401, "/api", "admin", "test");
+		Endpoint e3 = new Endpoint("testsrv3", "http://localhost:11401/api3", "admin", "test");		
 
 		RestTemplate restTemplate = new TestRestTemplate(user, password);
 		restTemplate
@@ -85,8 +83,7 @@ public class ApplicationTests {
 
 	@Test
 	public void testRestPut() throws Exception {
-		Endpoint e4 = new Endpoint("testsrv4", "http", "localhost",
-				"localhost.localdomain", 11401, "/api", "admin", "test");
+		Endpoint e4 = new Endpoint("testsrv4", "http://localhost:11401/api4", "admin", "test");		
 
 		RestTemplate restTemplate = new TestRestTemplate(user, password);
 		restTemplate.put("http://localhost:11401/api/endpoints/testsrv4", e4);
@@ -109,8 +106,7 @@ public class ApplicationTests {
 
 	@Test
 	public void testRestDelete() throws Exception {
-		Endpoint e5 = new Endpoint("testsrv5", "http", "localhost",
-				"localhost.localdomain", 11401, "/api", "admin", "test");
+		Endpoint e5 = new Endpoint("testsrv5", "http://localhost:11401/api5", "admin", "test");		
 
 		RestTemplate restTemplate = new TestRestTemplate(user, password);
 		restTemplate

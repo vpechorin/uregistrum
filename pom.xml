@@ -4,7 +4,7 @@
 	<groupId>net.pechorina.uregistrum</groupId>
 	<artifactId>uregistrum</artifactId>
 	<packaging>jar</packaging>
-	<version>0.4</version>
+	<version>0.5</version>
 	<name>uregistrum</name>
 	<description>uRegistrum - java micro services registry</description>
 	<url>https://github.com/vpechorin/uregistrum</url>
@@ -109,6 +109,7 @@
 
 	<!-- Package as an executable jar -->
 	<build>
+		<finalName>${project.name}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
