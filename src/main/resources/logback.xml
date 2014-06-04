@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 	<include resource="org/springframework/boot/logging/logback/base.xml" />
+	<logger name="org.springframework" level="INFO"/>
 	<logger name="org.springframework.boot" level="INFO"/>
 	<logger name="org.springframework.security" level="INFO" />
-	<logger name="org.springframework.web.client" level="WARN" />
-	<logger name="org.apache.commons.httpclient" level="WARN" />
 	<logger name="net.pechorina.uregistrum" level="INFO" />
 </configuration>
