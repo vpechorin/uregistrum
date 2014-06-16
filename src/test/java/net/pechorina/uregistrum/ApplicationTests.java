@@ -1,6 +1,7 @@
 package net.pechorina.uregistrum;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
 
@@ -48,7 +49,7 @@ public class ApplicationTests {
 
 	@Autowired
 	private EndpointService endpointService;
-
+	
 	@Test
 	public void testCreate() throws Exception {
 		Endpoint e = new Endpoint("testsrv1", "http://localhost:11401/api1", "admin", "test");

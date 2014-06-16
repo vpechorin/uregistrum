@@ -3,23 +3,25 @@ package net.pechorina.uregistrum.model;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.Type;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(indexes = { @Index(name = "regIdx", columnList = "registered"),
 		@Index(name = "expireIdx", columnList = "expires") })
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Endpoint implements Serializable {
 	private static final Logger logger = LoggerFactory.getLogger(Endpoint.class);
 	private static final long serialVersionUID = 1L;
@@ -39,12 +41,14 @@ public class Endpoint implements Serializable {
 
 	@JsonIgnore
 	private String encryptedPassword;
-
-	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
-	private DateTime registered;
-
-	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
-	private DateTime expires;
+	
+	@JsonIgnore
+	@Temporal(javax.persistence.TemporalType.DATE)
+	private Date registered;
+	
+	@JsonIgnore
+	@Temporal(javax.persistence.TemporalType.DATE)
+	private Date expires;
 
 	public Endpoint() {
 		super();
@@ -130,22 +134,6 @@ public class Endpoint implements Serializable {
 		this.version = version;
 	}
 
-	public DateTime getRegistered() {
-		return registered;
-	}
-
-	public void setRegistered(DateTime registered) {
-		this.registered = registered;
-	}
-
-	public DateTime getExpires() {
-		return expires;
-	}
-
-	public void setExpires(DateTime expires) {
-		this.expires = expires;
-	}
-
 	public String getUsername() {
 		return username;
 	}
@@ -200,6 +188,22 @@ public class Endpoint implements Serializable {
 
 	public void setHost(String host) {
 		this.host = host;
+	}
+
+	public Date getRegistered() {
+		return registered;
+	}
+
+	public void setRegistered(Date registered) {
+		this.registered = registered;
+	}
+
+	public Date getExpires() {
+		return expires;
+	}
+
+	public void setExpires(Date expires) {
+		this.expires = expires;
 	}
 
 	@Override

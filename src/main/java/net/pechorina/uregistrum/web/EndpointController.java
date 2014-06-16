@@ -50,6 +50,9 @@ public class EndpointController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Endpoint> createEndpoint(@RequestBody Endpoint endpoint, HttpServletRequest request) throws EndpointExistsException {
+		DateTime now = new DateTime();
+		endpoint.setRegistered(now.toDate());
+		endpoint.setExpires( now.plusSeconds(env.getProperty("endpoint.expires.sec", Integer.class)).toDate() );
 		Endpoint savedEntity = endpointService.addEndpoint(endpoint);
 		logger.info("CREATE: " + savedEntity + " Src:" + request.getRemoteAddr());
 		return new ResponseEntity<Endpoint>(savedEntity, HttpStatus.CREATED);
@@ -66,7 +69,9 @@ public class EndpointController {
 			endpoint.setRegistered(e.getRegistered());
 		} catch (EndpointNotFoundException e1) {
 			e = endpoint;
-			endpoint.setRegistered(new DateTime());
+			DateTime now = new DateTime();
+			endpoint.setRegistered(now.toDate());
+			endpoint.setExpires( now.plusSeconds(env.getProperty("endpoint.expires.sec", Integer.class)).toDate() );
 			endpoint.setName(name);
 		}
 

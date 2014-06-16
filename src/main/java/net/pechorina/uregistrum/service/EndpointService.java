@@ -55,9 +55,9 @@ public class EndpointService {
 		e.setDescription(description);
 		e.setVersion(version);
 		DateTime now = new DateTime();
-		DateTime expireDt = now.plusSeconds(env.getProperty("endpoint.expires.sec", Integer.class));
-		e.setRegistered(now);
-		e.setExpires(expireDt);
+		DateTime expires = now.plusSeconds( env.getProperty("endpoint.expires.sec", Integer.class) ) ;
+		e.setRegistered(now.toDate());
+		e.setExpires(expires.toDate());
 		
 		updateEncPassword(e);
 		Endpoint entity = endpointRepo.saveAndFlush(e);
@@ -84,7 +84,7 @@ public class EndpointService {
 	private void updateDateTime(Endpoint p) {
 		DateTime now = new DateTime();
 		DateTime expireDt = now.plusSeconds(env.getProperty("endpoint.expires.sec", Integer.class));
-		p.setExpires(expireDt);
+		p.setExpires(expireDt.toDate());
 	}
 	
 	@Transactional
