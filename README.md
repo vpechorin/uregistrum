@@ -8,8 +8,8 @@ Features
 - Platform Independent (java app)
 - Store local and remote urls for each service, with optional login/passwords
 - REST endpoints to add/remove/lookup endpoints
-- Embedded webserver (Jetty)
-- Embedded database engine (H2 Database Engine), can be configured with other popular relational databases
+- Embedded webserver (Tomcat)
+- Embedded database engine (H2 Database Engine), can be configured with other popular relational databases via config file
 - Packaged as a single executable jar
 
 How to build
@@ -17,15 +17,16 @@ How to build
 
 You require the following to build uRegistrum:
 
-- Latest stable Oracle JDK 7
-- Latest stable Apache Maven
+- JDK 8
+- Apache Maven
+
  $ mvn package
      
 
 How to use
 ==========
-	
- $ java -jar ./target/uregistrum-0.1.jar
+ 	
+ $ java -jar ./target/uregistrum.jar
 
 The default address is http://localhost:11400/api/endpoints
 
