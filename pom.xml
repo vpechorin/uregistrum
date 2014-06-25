@@ -4,7 +4,7 @@
 	<groupId>net.pechorina.uregistrum</groupId>
 	<artifactId>uregistrum</artifactId>
 	<packaging>jar</packaging>
-	<version>0.5.6</version>
+	<version>0.5.7</version>
 	<name>uregistrum</name>
 	<description>uRegistrum - java micro services registry</description>
 	<url>https://github.com/vpechorin/uregistrum</url>
@@ -34,7 +34,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.1.1.RELEASE</version>
+		<version>1.1.2.RELEASE</version>
 	</parent>
 
 	<dependencies>
